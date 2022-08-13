@@ -1,0 +1,7 @@
+1) set the task section to be mutable
+
+2) loop through each key in times:
+    - set the #time textContent
+    - set the col-sm-8 background color based on curr time
+    ... How can I convert a string to a number?
+
