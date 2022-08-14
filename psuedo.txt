@@ -1,3 +1,0 @@
-1) fix bug for getBackgroundClass(timeRangeStartHr) for values of 8 and 9 (currently returning bg-success when it should be bg-secondary)
-
-2) add save button to store info in local storage

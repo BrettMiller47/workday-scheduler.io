@@ -1,4 +1,4 @@
-// display current date
+// display current date in <header> textContent
 var currDate = moment().format("MMM Do YYYY");
 var dateEl = document.querySelector("#currentDay");
 dateEl.textContent = currDate;
@@ -15,7 +15,6 @@ var times = {
     15: "3:00 - 4:00 pm",
     16: "4:00 - 5:00 pm"
 }
-
 var lenTimes = Object.keys(times).length;
 
 // append a row of three column elements for each schedule time slot in times:
@@ -24,7 +23,7 @@ for (let i = 0; i < lenTimes; i++) {
     // < rootContainerEl >
     // ----< rowEL >
     // -------- < timeColEl >
-    // -------- < taskColEl >
+    // -------- < descriptionColEl >
     // -------- < saveColEl >
 
     // create the timeColEl (<p>)
@@ -32,38 +31,40 @@ for (let i = 0; i < lenTimes; i++) {
     timeColEl.setAttribute("class", "col-sm-2 m-0 time-block");
     timeColEl.textContent = Object.values(times)[i];
 
-    // create the taskColEl (editable <p>)
-    var taskColEl = document.createElement("p");
-    taskColEl.setAttribute("class", "col-sm-8 m-0 rounded description");
-//BUG START-----------------------
-    // set the background color based on current time of day
+    // create the descriptionColEl (editable <p>)
+    var descriptionColEl = document.createElement("p");
+    descriptionColEl.setAttribute("class", "col-sm-7 m-0 rounded description");
+    descriptionColEl.setAttribute("id", "description-" + i);
+    descriptionColEl.setAttribute("contenteditable", "true");
+    descriptionColEl.textContent = localStorage.getItem("description-" + i);
+
+    // set the descriptionColEl background color based on current time of day
     var timeRangeStartHr = Object.keys(times)[i];
-    if (isPast(timeRangeStartHr)) {
-        taskColEl.classList.add("past");
-    } else if (isPresent(timeRangeStartHr)) {
-        taskColEl.classList.add("present");
-    } else if (isFuture(timeRangeStartHr)) {
-        taskColEl.classList.add("future");
+    timeRangeStartHr = parseInt(timeRangeStartHr);
+    
+    if (isPastHour(timeRangeStartHr)) {
+        descriptionColEl.classList.add("past");
+    } else if (isPresentHour(timeRangeStartHr)) {
+        descriptionColEl.classList.add("present");
+    } else if (isFutureHour(timeRangeStartHr)) {
+        descriptionColEl.classList.add("future");
     }
-//BUG END------------------------------------------------------------------    
-    taskColEl.id = "task-" + i;
-    taskColEl.textContent = "Get item from local storage"
 
     // create the saveColEl (<button> with <span> child)
     var saveIconEl = document.createElement("span");
     saveIconEl.setAttribute("class", "glyphicon glyphicon-floppy-save");
     saveIconEl.textContent = " Save";
     var saveColEl = document.createElement("button");
-    saveColEl.setAttribute("class", "col-sm-1 btn saveBtn")
+    saveColEl.setAttribute("class", "col-sm-2 btn saveBtn")
     saveColEl.setAttribute("type", "button");
     saveColEl.id ="saveBtn-" + i;
     saveColEl.append(saveIconEl);
     
-    // append the three column elements to the rowEl
+    // create the rowEl and append the three column elements
     var rowEl = document.createElement("div");
     rowEl.setAttribute("class", "row");
     rowEl.append(timeColEl);
-    rowEl.append(taskColEl);
+    rowEl.append(descriptionColEl);
     rowEl.append(saveColEl);
 
     // append the row to the rootContainerEl
@@ -71,31 +72,60 @@ for (let i = 0; i < lenTimes; i++) {
     rootContainerEl.append(rowEl);
 }    
 
-
 // function returning boolean where true is an hourly timeframe that has already occured today
-function isPast(hourInMilitaryTime) {
+function isPastHour(hourInMilitaryTime) {
+    
+    // declare the currentHour in military time format
     var currentHour = moment().format("HH");
+
+    // if the currentHour is equal to the argument for an hourInMilitaryTime
     if (hourInMilitaryTime < currentHour) {
+        // argument isPastHour
         return true;
     } else {
         return false;
     }
 }
+
 // function returning boolean where true is an hourly timeframe that is in the present
-function isPresent(hourInMilitaryTime) {
+function isPresentHour(hourInMilitaryTime) {
+
+    // declare the currentHour in military time format
     var currentHour = moment().format("HH");
+    
+    // if the currentHour is equal to the argument for an hourInMilitaryTime
     if (currentHour == hourInMilitaryTime) {
+        // argument isPresentHour
         return true;
     } else {
         return false;
     }
 }
+
 // function returning boolean where true is an hourly timeframe that has not occured today
-function isFuture(hourInMilitaryTime) {
+function isFutureHour(hourInMilitaryTime) {
+    
+    // declare the currentHour in military time format
     var currentHour = moment().format("HH");
+    
+    // if the currentHour is before the argument for an hourInMilitaryTime
     if (currentHour < hourInMilitaryTime) {
+            // argument isFutureHour
             return true;
         } else {
             return false;
     }
 }
+
+// event listeners for ALL save buttons 
+$(".saveBtn").each(function (index, value) {
+    
+    // add event listener for INDIVIDUAL save button
+    $("#saveBtn-" + index).on("click", function () {
+        
+        // save the corresponding description in localStorage
+        var descriptionEl = $("#description-" + index); 
+        var newDesc = descriptionEl.text();
+        localStorage.setItem("description-" + index, newDesc);
+    });
+});
