@@ -1,7 +1,3 @@
-1) set the task section to be mutable
+1) fix bug for getBackgroundClass(timeRangeStartHr) for values of 8 and 9 (currently returning bg-success when it should be bg-secondary)
 
-2) loop through each key in times:
-    - set the #time textContent
-    - set the col-sm-8 background color based on curr time
-    ... How can I convert a string to a number?
-
+2) add save button to store info in local storage

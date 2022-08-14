@@ -16,62 +16,75 @@ var times = {
     16: "4:00 - 5:00 pm"
 }
 
-localStorage.setItem(8, "8:00 - 9:00 am");
-var get = localStorage.getItem(8);
-console.log(get);
-
-// for each time in times...
 var lenTimes = Object.keys(times).length;
+
+// append a row of three column elements for each schedule time slot in times:
 for (let i = 0; i < lenTimes; i++) {
-    // store key: value pair
-
-
-    // declare rootContainerEl to hold the individual schedule rows
-    // construct individual schedule row and store as a local variable
-    // append scheduleRow to rootContainerEl
-}    
-
-
-function constructScheduleRow() {
-    // create a rootRow element to hold three columns: 
-    // --- (timeColEl, taskColEl, saveColEl) ---
-    var rootRowEl = document.createElement("div");
-    rootRowEl.setAttribute("class", "row");
-    console.log(rootRowEl);
+    // for each time range in times:
+    // < rootContainerEl >
+    // ----< rowEL >
+    // -------- < timeColEl >
+    // -------- < taskColEl >
+    // -------- < saveColEl >
 
     // create the timeColEl (<p>)
     var timeColEl = document.createElement("p");
     timeColEl.setAttribute("class", "col-sm-2 m-0 text-center");
-    timeColEl.textContent = Object.values(times)[0];
-    console.log(timeColEl);
+    timeColEl.textContent = Object.values(times)[i];
 
     // create the taskColEl (editable <p>)
     var taskColEl = document.createElement("p");
-    taskColEl.setAttribute("class", "col-sm-8 m-0 bg-secondary text-light rounded");
+    taskColEl.setAttribute("class", "col-sm-8 m-0 rounded");
+//BUG START-----------------------
+    var timeRangeStartHr = Object.keys(times)[i];
+    var bootsrapBackgroundClass = getBackgroundClass(timeRangeStartHr); 
+    console.log("i = " + i);
+    console.log("times[i] in [8,9,10,etc.] = " + timeRangeStartHr);
+    console.log("timeRangeStartHour = " + timeRangeStartHr);
+    console.log("bootstrapBackgroundClass(timeRangeStartHr) = " + bootsrapBackgroundClass);
+    console.log("Past: " + isPast(timeRangeStartHr) + "    Present: " + isPresent(timeRangeStartHr) + "    Future: " + isFuture(timeRangeStartHr));
+    console.log("----- next i -----");
+//BUG END------------------------------------------------------------------    
+    taskColEl.classList.add(bootsrapBackgroundClass);
     taskColEl.textContent = "Get item from local storage"
-    console.log(taskColEl);
+    taskColEl.id = "task-" + i;
 
     // create the saveColEl (<button> with <span> child)
     var saveIconEl = document.createElement("span");
     saveIconEl.setAttribute("class", "glyphicon glyphicon-floppy-save");
     saveIconEl.textContent = " Save";
-    console.log(saveIconEl);
     var saveColEl = document.createElement("button");
     saveColEl.setAttribute("class", "col-sm-1 btn saveBtn")
     saveColEl.setAttribute("type", "button");
-    saveColEl.setAttribute("id", "button-");
+    saveColEl.id ="saveBtn-" + i;
     saveColEl.append(saveIconEl);
-    console.log(saveColEl);
     
-    // append the three column elements to the rootRowEl
-    rootRowEl.append(timeColEl);
-    rootRowEl.append(taskColEl);
-    rootRowEl.append(saveColEl);
+    // append the three column elements to the rowEl
+    var rowEl = document.createElement("div");
+    rowEl.setAttribute("class", "row");
+    rowEl.append(timeColEl);
+    rowEl.append(taskColEl);
+    rowEl.append(saveColEl);
 
+    // append the row to the rootContainerEl
     var rootContainerEl = document.querySelector(".container");
-    rootContainerEl.append(rootRowEl)
-}
+    rootContainerEl.append(rowEl);
+}    
 
+
+// function returning the class for bootstrap background colors based on time status
+function getBackgroundClass(numBetween1And24) {
+    if (isPast(numBetween1And24)) {
+        return "bg-secondary";
+    } else if (isPresent(numBetween1And24)) {
+        return "bg-danger";
+    } else if (isFuture(numBetween1And24)) {
+        return "bg-success";
+    } else {
+        console.log("Error Occured in getBackgroundClass(). Function returned nothing.")
+        return;
+    }
+}
 
 // function returning boolean where true is an hourly timeframe that has already occured today
 function isPast(hourInMilitaryTime) {
