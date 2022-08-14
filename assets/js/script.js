@@ -19,9 +19,8 @@ var lenTimes = Object.keys(times).length;
 
 // append a row of three column elements for each schedule time slot in times:
 for (let i = 0; i < lenTimes; i++) {
-    // for each time range in times:
     // < rootContainerEl >
-    // ----< rowEL >
+    // ---- < rowEL >
     // -------- < timeColEl >
     // -------- < descriptionColEl >
     // -------- < saveColEl >
