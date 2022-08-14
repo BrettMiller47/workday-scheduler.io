@@ -29,25 +29,25 @@ for (let i = 0; i < lenTimes; i++) {
 
     // create the timeColEl (<p>)
     var timeColEl = document.createElement("p");
-    timeColEl.setAttribute("class", "col-sm-2 m-0 text-center");
+    timeColEl.setAttribute("class", "col-sm-2 m-0 time-block");
     timeColEl.textContent = Object.values(times)[i];
 
     // create the taskColEl (editable <p>)
     var taskColEl = document.createElement("p");
-    taskColEl.setAttribute("class", "col-sm-8 m-0 rounded");
+    taskColEl.setAttribute("class", "col-sm-8 m-0 rounded description");
 //BUG START-----------------------
+    // set the background color based on current time of day
     var timeRangeStartHr = Object.keys(times)[i];
-    var bootsrapBackgroundClass = getBackgroundClass(timeRangeStartHr); 
-    console.log("i = " + i);
-    console.log("times[i] in [8,9,10,etc.] = " + timeRangeStartHr);
-    console.log("timeRangeStartHour = " + timeRangeStartHr);
-    console.log("bootstrapBackgroundClass(timeRangeStartHr) = " + bootsrapBackgroundClass);
-    console.log("Past: " + isPast(timeRangeStartHr) + "    Present: " + isPresent(timeRangeStartHr) + "    Future: " + isFuture(timeRangeStartHr));
-    console.log("----- next i -----");
+    if (isPast(timeRangeStartHr)) {
+        taskColEl.classList.add("past");
+    } else if (isPresent(timeRangeStartHr)) {
+        taskColEl.classList.add("present");
+    } else if (isFuture(timeRangeStartHr)) {
+        taskColEl.classList.add("future");
+    }
 //BUG END------------------------------------------------------------------    
-    taskColEl.classList.add(bootsrapBackgroundClass);
-    taskColEl.textContent = "Get item from local storage"
     taskColEl.id = "task-" + i;
+    taskColEl.textContent = "Get item from local storage"
 
     // create the saveColEl (<button> with <span> child)
     var saveIconEl = document.createElement("span");
@@ -71,20 +71,6 @@ for (let i = 0; i < lenTimes; i++) {
     rootContainerEl.append(rowEl);
 }    
 
-
-// function returning the class for bootstrap background colors based on time status
-function getBackgroundClass(numBetween1And24) {
-    if (isPast(numBetween1And24)) {
-        return "bg-secondary";
-    } else if (isPresent(numBetween1And24)) {
-        return "bg-danger";
-    } else if (isFuture(numBetween1And24)) {
-        return "bg-success";
-    } else {
-        console.log("Error Occured in getBackgroundClass(). Function returned nothing.")
-        return;
-    }
-}
 
 // function returning boolean where true is an hourly timeframe that has already occured today
 function isPast(hourInMilitaryTime) {
