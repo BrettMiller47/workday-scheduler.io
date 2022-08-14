@@ -25,12 +25,12 @@ for (let i = 0; i < lenTimes; i++) {
     // -------- < descriptionColEl >
     // -------- < saveColEl >
 
-    // create the timeColEl (<p>)
+    // create the timeColEl --- <p>
     var timeColEl = document.createElement("p");
     timeColEl.setAttribute("class", "col-sm-2 m-0 time-block");
     timeColEl.textContent = Object.values(times)[i];
 
-    // create the descriptionColEl (editable <p>)
+    // create the descriptionColEl --- editable <p>
     var descriptionColEl = document.createElement("p");
     descriptionColEl.setAttribute("class", "col-sm-7 m-0 rounded description");
     descriptionColEl.setAttribute("id", "description-" + i);
@@ -49,7 +49,7 @@ for (let i = 0; i < lenTimes; i++) {
         descriptionColEl.classList.add("future");
     }
 
-    // create the saveColEl (<button> with <span> child)
+    // create the saveColEl --- <button> with <span> child
     var saveIconEl = document.createElement("span");
     saveIconEl.setAttribute("class", "glyphicon glyphicon-floppy-save");
     saveIconEl.textContent = " Save";
