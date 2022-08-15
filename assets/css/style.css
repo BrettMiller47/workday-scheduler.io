@@ -24,17 +24,22 @@ textarea{
 .description{
   white-space: pre-wrap;
   min-height: 80px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: 1px solid black;
 }
 
 .time-block{
   text-align: center;
-  border-radius: 15px;
+  border-bottom: 1px dashed black;
+  vertical-align: middle;
+  padding-top: 42px;
+  padding-bottom: 42px;
 }
 
 .row {
   white-space: pre-wrap;
   min-height: 80px;
-  border-top: 1px solid white;;
 }
 
 .hour {
@@ -64,9 +69,19 @@ textarea{
   border-bottom-right-radius: 15px;
   background-color: #06AED5;
   color: white;
+  margin-left: 4px;
+  height: 100%;
+  align-self: center;
 }
 
 .saveBtn i:hover {
   font-size: 20px;
   transition: all .3s ease-in-out;
+}
+
+@media screen and (max-width: 576px) {
+  .time-block {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
 }

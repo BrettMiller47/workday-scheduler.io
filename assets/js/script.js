@@ -32,7 +32,7 @@ for (let i = 0; i < lenTimes; i++) {
 
     // create the descriptionColEl --- editable <p>
     var descriptionColEl = document.createElement("p");
-    descriptionColEl.setAttribute("class", "col-sm-7 m-0 rounded description");
+    descriptionColEl.setAttribute("class", "col-sm-7 m-0 text-dark description");
     descriptionColEl.setAttribute("id", "description-" + i);
     descriptionColEl.setAttribute("contenteditable", "true");
     descriptionColEl.textContent = localStorage.getItem("description-" + i);
